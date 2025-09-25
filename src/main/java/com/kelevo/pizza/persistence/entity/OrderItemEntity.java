@@ -1,5 +1,6 @@
 package com.kelevo.pizza.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.Getter;
@@ -37,6 +38,7 @@ public class OrderItemEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_order", referencedColumnName = "id_order", insertable = false, updatable = false)
+    @JsonIgnore
     private PizzaOrderEntity order;
 
 }
