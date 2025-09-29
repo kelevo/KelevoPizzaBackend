@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -20,6 +22,16 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<List<PizzaOrderEntity>> getAll() {
         return ResponseEntity.ok(this.orderService.getAll());
+    }
+
+    @GetMapping("/today")
+    public ResponseEntity<List<PizzaOrderEntity>> getTodayOrders() {
+        return ResponseEntity.ok(this.orderService.getTodayOrders());
+    }
+
+    @GetMapping("/outside")
+    public ResponseEntity<List<PizzaOrderEntity>> getOutsideOrders() {
+        return ResponseEntity.ok(this.orderService.getOutsideOrders());
     }
 
 }
