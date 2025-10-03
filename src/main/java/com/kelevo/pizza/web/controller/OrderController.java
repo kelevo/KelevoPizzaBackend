@@ -1,6 +1,7 @@
 package com.kelevo.pizza.web.controller;
 
 import com.kelevo.pizza.persistence.entity.PizzaOrderEntity;
+import com.kelevo.pizza.persistence.projection.OrderSumary;
 import com.kelevo.pizza.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -39,6 +40,11 @@ public class OrderController {
     @GetMapping("/customer/{id}")
     public ResponseEntity<List<PizzaOrderEntity>> getCustomerOrders(@PathVariable String id) {
         return ResponseEntity.ok(this.orderService.getCustomerOrders(id));
+    }
+
+    @GetMapping("/sumary/{id}")
+    public ResponseEntity<OrderSumary> getSumary(@PathVariable int id) {
+        return ResponseEntity.ok(this.orderService.getSumary(id));
     }
 
 }

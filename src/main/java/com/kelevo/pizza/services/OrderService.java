@@ -1,6 +1,7 @@
 package com.kelevo.pizza.services;
 
 import com.kelevo.pizza.persistence.entity.PizzaOrderEntity;
+import com.kelevo.pizza.persistence.projection.OrderSumary;
 import com.kelevo.pizza.persistence.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,10 @@ public class OrderService {
 
     public List<PizzaOrderEntity> getCustomerOrders(String idCustomer) {
         return this.orderRepository.findCustomerOrders(idCustomer);
+    }
+
+    public OrderSumary getSumary(int orderId) {
+        return this.orderRepository.findSumary(orderId);
     }
 
 }
