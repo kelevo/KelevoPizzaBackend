@@ -35,4 +35,8 @@ public class OrderService {
         return this.orderRepository.findAllByMethodIn(methods);
     }
 
+    public List<PizzaOrderEntity> getCustomerOrders(String idCustomer) {
+        return this.orderRepository.findCustomerOrders(idCustomer);
+    }
+
 }
