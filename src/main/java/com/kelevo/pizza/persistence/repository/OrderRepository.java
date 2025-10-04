@@ -24,7 +24,9 @@ public interface OrderRepository extends ListCrudRepository<PizzaOrderEntity, In
             "JOIN order_item  oi ON po.id_order = oi.id_order " +
             "JOIN pizza       p  ON oi.id_pizza = p.id_pizza " +
             "WHERE po.id_order = :orderId " +
-            "GROUP BY po.id_order, c.name, po.date, po.total", nativeQuery = true)
+            "GROUP BY po.id_order, c.name, po.date, po.total",
+            nativeQuery = true
+    )
     OrderSumary findSumary(@Param("orderId") int orderId);
 
 }
