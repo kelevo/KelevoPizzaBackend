@@ -3,8 +3,10 @@ package com.kelevo.pizza.services;
 import com.kelevo.pizza.persistence.entity.PizzaOrderEntity;
 import com.kelevo.pizza.persistence.projection.OrderSumary;
 import com.kelevo.pizza.persistence.repository.OrderRepository;
+import com.kelevo.pizza.services.dto.RandomOrderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,7 +29,7 @@ public class OrderService {
     }
 
     public List<PizzaOrderEntity> getTodayOrders() {
-        LocalDateTime today = LocalDate.now().atTime(0,0);
+        LocalDateTime today = LocalDate.now().atTime(0, 0);
         return this.orderRepository.findAllByDateAfter(today);
     }
 
@@ -42,6 +44,11 @@ public class OrderService {
 
     public OrderSumary getSumary(int orderId) {
         return this.orderRepository.findSumary(orderId);
+    }
+
+    @Transactional
+    public boolean saveRandomOrder(RandomOrderDTO randomOrderDto) {
+        return this.orderRepository.saveRandomOrder(randomOrderDto.getIdCustomer(), randomOrderDto.getMethod());
     }
 
 }

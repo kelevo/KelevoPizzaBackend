@@ -3,6 +3,7 @@ package com.kelevo.pizza.persistence.repository;
 import com.kelevo.pizza.persistence.entity.PizzaOrderEntity;
 import com.kelevo.pizza.persistence.projection.OrderSumary;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -28,5 +29,8 @@ public interface OrderRepository extends ListCrudRepository<PizzaOrderEntity, In
             nativeQuery = true
     )
     OrderSumary findSumary(@Param("orderId") int orderId);
+
+    @Procedure(value = "take_random_pizza_order", outputParameterName = "order_taken")
+    boolean saveRandomOrder(@Param("id_customer") String idCustomer, @Param("method") String method);
 
 }
