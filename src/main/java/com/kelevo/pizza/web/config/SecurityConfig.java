@@ -2,6 +2,7 @@ package com.kelevo.pizza.web.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -20,7 +21,24 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/pizzas/**", "/customer/**", "/auth/**", "/docs/**").permitAll()
+
+                        // Pizzas
+                        .requestMatchers(HttpMethod.GET, "/pizzas/**").hasAnyRole("ADMIN", "CUSTOMER")
+                        .requestMatchers(HttpMethod.POST, "/pizzas/**").hasRole("ADMIN")
+
+                        // Customers
+                        .requestMatchers(HttpMethod.GET, "/customer/**").hasAnyRole("ADMIN", "CUSTOMER")
+
+                        // Orders
+                        .requestMatchers("/orders/**").hasRole("ADMIN")
+
+                        // Permitir autenticación y documentación
+                        .requestMatchers("/auth/**", "/docs/**").permitAll()
+
+                        // Todos los put solo permitidos por ADMIN
+                        .requestMatchers(HttpMethod.PUT).hasRole("ADMIN")
+
+                        // Cualquier otro endpoint requiere autenticación
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());
@@ -32,11 +50,17 @@ public class SecurityConfig {
     public UserDetailsService memoryUsers() {
         UserDetails admin = User.builder()
                 .username("admin")
-                .password(passwordEncoder().encode("admin"))
+                .password(passwordEncoder().encode("admin123"))
                 .roles("ADMIN")
                 .build();
 
-        return new InMemoryUserDetailsManager(admin);
+        UserDetails customer = User.builder()
+                .username("customer")
+                .password(passwordEncoder().encode("customer123"))
+                .roles("CUSTOMER")
+                .build();
+
+        return new InMemoryUserDetailsManager(admin, customer);
     }
 
     @Bean
