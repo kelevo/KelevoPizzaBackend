@@ -1,6 +1,6 @@
 services:
   mysql:
-    image: 'mysql:latest'  # o 'mysql:8.0' si quieres más estable
+    image: 'mysql:8.0'
     restart: unless-stopped
     environment:
       - MYSQL_DATABASE=kelevo_pizza_db
