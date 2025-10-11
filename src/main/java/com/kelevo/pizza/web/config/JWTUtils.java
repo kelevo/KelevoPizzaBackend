@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class JWTUtils {
 
-    private static String SECRET_KEY = "kelevo_pizz4"
+    private static String SECRET_KEY = "kelevo_pizz4";
     private static Algorithm ALGORITHM = Algorithm.HMAC256(SECRET_KEY);
 
     public String create(String username) {

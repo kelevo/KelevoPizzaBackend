@@ -3,7 +3,9 @@ package com.kelevo.pizza.web.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -23,6 +25,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        // Permitir autenticación
+                        .requestMatchers("/auth/**").permitAll()
                         // Pizzas
                         .requestMatchers(HttpMethod.GET, "/pizzas/**").hasAnyRole("ADMIN", "CUSTOMER")
                         .requestMatchers(HttpMethod.POST, "/pizzas/**").hasRole("ADMIN")
@@ -31,8 +35,6 @@ public class SecurityConfig {
                         // Orders
                         .requestMatchers("/orders/random").hasAuthority("random_order")
                         .requestMatchers("/orders/**").hasRole("ADMIN")
-                        // Permitir autenticación y documentación
-                        .requestMatchers("/auth/**", "/docs/**").permitAll()
                         // Todos los put solo permitidos por ADMIN
                         .requestMatchers(HttpMethod.PUT).hasRole("ADMIN")
                         // Cualquier otro endpoint requiere autenticación
@@ -41,6 +43,11 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 
     @Bean
