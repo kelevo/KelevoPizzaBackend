@@ -21,23 +21,18 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-
                         // Pizzas
                         .requestMatchers(HttpMethod.GET, "/pizzas/**").hasAnyRole("ADMIN", "CUSTOMER")
                         .requestMatchers(HttpMethod.POST, "/pizzas/**").hasRole("ADMIN")
-
                         // Customers
-                        .requestMatchers(HttpMethod.GET, "/customer/**").hasAnyRole("ADMIN", "CUSTOMER")
-
+                        .requestMatchers(HttpMethod.GET, "/customer/**").hasRole("ADMIN")
                         // Orders
+                        .requestMatchers("/orders/random").hasAuthority("random_order")
                         .requestMatchers("/orders/**").hasRole("ADMIN")
-
                         // Permitir autenticación y documentación
                         .requestMatchers("/auth/**", "/docs/**").permitAll()
-
                         // Todos los put solo permitidos por ADMIN
                         .requestMatchers(HttpMethod.PUT).hasRole("ADMIN")
-
                         // Cualquier otro endpoint requiere autenticación
                         .anyRequest().authenticated()
                 )
